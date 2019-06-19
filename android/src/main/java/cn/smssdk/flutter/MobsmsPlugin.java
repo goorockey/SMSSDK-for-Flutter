@@ -46,24 +46,34 @@ public class MobsmsPlugin implements MethodCallHandler {
 			public void afterEvent(final int event, final int result, final Object data) {
 				if (result == SMSSDK.RESULT_COMPLETE) {
 					if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-						boolean smart = (Boolean)data;
-						// callback onSuccess
-						Map<String, Object> map = new HashMap<>();
-						map.put("smart", smart);
-						onSuccess(rst, map);
+            	new Handler(Looper.getMainLooper()).post(new Runnable() {
+							@Override
+							public void run() {
+								boolean smart = (Boolean)data;
+								// callback onSuccess
+								Map<String, Object> map = new HashMap<>();
+								map.put("smart", smart);
+								onSuccess(rst, map);
+							}
+						});
 					}
 				} else {
 					if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
 						// callback onError
-						if (data instanceof Throwable) {
-							Throwable throwable = (Throwable) data;
-							String msg = throwable.getMessage();
-							onSdkError(rst, msg);
-						} else {
-							String msg = "Sdk returned 'RESULT_ERROR', but the data is NOT an instance of Throwable";
-							SMSSDKLog.e("getTextCode() internal error: " + msg);
-							onInternalError(rst, msg);
-						}
+					new Handler(Looper.getMainLooper()).post(new Runnable() {
+							@Override
+							public void run() {
+								if (data instanceof Throwable) {
+									Throwable throwable = (Throwable) data;
+									String msg = throwable.getMessage();
+									onSdkError(rst, msg);
+								} else {
+									String msg = "Sdk returned 'RESULT_ERROR', but the data is NOT an instance of Throwable";
+									SMSSDKLog.e("getTextCode() internal error: " + msg);
+									onInternalError(rst, msg);
+								}
+							}
+						});
 					}
 				}
 			}
