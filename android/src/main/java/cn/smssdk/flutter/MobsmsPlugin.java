@@ -348,26 +348,28 @@ public class MobsmsPlugin implements MethodCallHandler {
 				  result.success(map);
 			  }
 		  });
-	  } catch (JSONException e) {
+	  } catch (Exception e) {
 		  SMSSDKLog.e("Smssdk Flutter plugin internal error. msg= " + e.getMessage(), e);
 		  onInternalError(result,"Generate JSONObject error");
 	  }
-
-
   }
 
 	private void onInternalError(final Result result, String errMsg) {
-		Map<String, Object> errMap = new HashMap<>();
-		errMap.put(KEY_CODE, BRIDGE_ERR);
-		errMap.put(KEY_MSG, ERROR_INTERNAL + errMsg);
+		try {
+			Map<String, Object> errMap = new HashMap<>();
+			errMap.put(KEY_CODE, BRIDGE_ERR);
+			errMap.put(KEY_MSG, ERROR_INTERNAL + errMsg);
 
-		final Map<String, Object> map = new HashMap<>();
-		map.put("err", errMap);
-		new Handler(Looper.getMainLooper()).post(new Runnable() {
-			@Override
-			public void run() {
-				result.success(map);
-			}
-		});
+			final Map<String, Object> map = new HashMap<>();
+			map.put("err", errMap);
+		  new Handler(Looper.getMainLooper()).post(new Runnable() {
+			  @Override
+			  public void run() {
+				  result.success(map);
+		  	}
+		  });
+		} catch (Exception e) {
+		  SMSSDKLog.e("Smssdk Flutter plugin on internal error. msg= " + e.getMessage(), e);
+		}
 	}
 }
