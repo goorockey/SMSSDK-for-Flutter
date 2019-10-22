@@ -28,13 +28,18 @@ public class MobsmsPlugin implements MethodCallHandler {
 	private static final String KEY_MSG = "msg";
 	private static final int BRIDGE_ERR = 700;
 	private static final String ERROR_INTERNAL = "Flutter bridge internal error: ";
+	private static MethodChannel mChannel;
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
   	SMSSDKLog.d("registerWith() called");
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL);
-    channel.setMethodCallHandler(new MobsmsPlugin());
-  }
+    mChannel = new MethodChannel(registrar.messenger(), CHANNEL);
+    mChannel.setMethodCallHandler(new MobsmsPlugin());
+	}
+	
+  public void dispose() {
+		mChannel.setMethodCallHandler(null);
+	}
 
   @Override
   public void onMethodCall(MethodCall call, final Result rst) {
