@@ -327,7 +327,11 @@ public class MobsmsPlugin implements MethodCallHandler {
 	  new Handler(Looper.getMainLooper()).post(new Runnable() {
 		  @Override
 		  public void run() {
-			  result.success(map);
+				try {
+					result.success(map);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 		  }
 	  });
   }
@@ -350,7 +354,11 @@ public class MobsmsPlugin implements MethodCallHandler {
 		  new Handler(Looper.getMainLooper()).post(new Runnable() {
 			  @Override
 			  public void run() {
-				  result.success(map);
+					try {
+						result.success(map);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 			  }
 		  });
 	  } catch (Exception e) {
@@ -370,7 +378,11 @@ public class MobsmsPlugin implements MethodCallHandler {
 		  new Handler(Looper.getMainLooper()).post(new Runnable() {
 			  @Override
 			  public void run() {
-				  result.success(map);
+					try {
+						result.success(map);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 		  	}
 		  });
 		} catch (Exception e) {
